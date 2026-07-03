@@ -188,6 +188,7 @@ foreach my $mirror (@ARGV) {
 }
 
 #push @mirrors, 'http://mirror1.openwrt.org';
+push @mirrors, 'https://github.com/kiper292/openwrt_rtk/releases/download/build-assets';
 push @mirrors, 'http://mirror2.openwrt.org/sources';
 push @mirrors, 'http://downloads.openwrt.org/sources';
 

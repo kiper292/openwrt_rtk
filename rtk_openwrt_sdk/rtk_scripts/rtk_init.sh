@@ -115,13 +115,13 @@ prepare_rsdk_toolchain() {
 	mkdir -p dl
 	mkdir -p staging_dir
 
-	if [ ! -e dl/rsdk-4.6.4-5281-EB-3.10-0.9.33-m32ub-20141001.tar.bz2 ]; then
-		svn export http://cadinfo.realtek.com.tw/svn/CN/jungle/trunk/toolchain/rsdk/uclibc/rsdk-4.6.4-5281-EB-3.10-0.9.33-m32ub-20141001.tar.bz2 dl/rsdk-4.6.4-5281-EB-3.10-0.9.33-m32ub-20141001.tar.bz2
-		tar xvfj dl/rsdk-4.6.4-5281-EB-3.10-0.9.33-m32ub-20141001.tar.bz2 -C staging_dir/
+	if [ ! -e dl/rsdk-4.6.4-5281-EB-3.10-0.9.33-m32ub-20141001.tar.xz ]; then
+		wget -q https://github.com/kiper292/openwrt_rtk/releases/download/rsdk/rsdk-4.6.4-5281-EB-3.10-0.9.33-m32ub-20141001.tar.xz -O dl/rsdk-4.6.4-5281-EB-3.10-0.9.33-m32ub-20141001.tar.xz
+		tar xf dl/rsdk-4.6.4-5281-EB-3.10-0.9.33-m32ub-20141001.tar.xz -C staging_dir/
 	fi
-        if [ ! -e dl/rsdk-4.6.4-4181-EB-3.10-0.9.33-m32u-20141001.tar.bz2 ]; then
-		svn export http://cadinfo.realtek.com.tw/svn/CN/jungle/trunk/toolchain/rsdk/uclibc/rsdk-4.6.4-4181-EB-3.10-0.9.33-m32u-20141001.tar.bz2 dl/rsdk-4.6.4-4181-EB-3.10-0.9.33-m32u-20141001.tar.bz2
-		tar xvfj dl/rsdk-4.6.4-4181-EB-3.10-0.9.33-m32u-20141001.tar.bz2 -C staging_dir/
+        if [ ! -e dl/rsdk-4.6.4-4181-EB-3.10-0.9.33-m32u-20141001.tar.xz ]; then
+		wget -q https://github.com/kiper292/openwrt_rtk/releases/download/rsdk/rsdk-4.6.4-4181-EB-3.10-0.9.33-m32u-20141001.tar.xz -O dl/rsdk-4.6.4-4181-EB-3.10-0.9.33-m32u-20141001.tar.xz
+		tar xf dl/rsdk-4.6.4-4181-EB-3.10-0.9.33-m32u-20141001.tar.xz -C staging_dir/
 	fi
 	cp include/site/mips-openwrt-linux-uclibc include/site/mips-rlx5281-linux
 	cp include/site/mips-openwrt-linux-uclibc include/site/mips-rlx4181-linux
