@@ -101,6 +101,21 @@ $(eval $(call SingleProfile,AP,ttyS0,38400,root=/dev/mtdblock2,0x80500000,60000,
 endif
 endif
 
+# DAP-1360 (RTL8196C) - kernel at 0x30000, hw settings at 0x20000
+ifeq ($(CONFIG_TARGET_rtkmips_rtl8196c),y)
+# DAP-1360 flash layout:
+# boot:  0x000000 (64KB)
+# MAC:   0x010000 (64KB)
+# config: 0x020000 (64KB)
+# kernel: 0x030000 (1MB)
+# rootfs: 0x130000 (2.8MB)
+ifeq ($(CONFIG_MTD_NAND_RTK),y)
+$(eval $(call SingleProfile,DAP1360,ttyS0,38400,root=/dev/mtdblock3,0x80500000,800000,0))
+else
+$(eval $(call SingleProfile,DAP1360,ttyS0,38400,root=/dev/mtdblock2,0x80500000,30000,20000))
+endif
+endif
+
 ifeq ($(CONFIG_TARGET_rtkmips_rtl8954e),y)
 # linun partition offset = 0x6000
 # hw setting parttion offset = 0x20000

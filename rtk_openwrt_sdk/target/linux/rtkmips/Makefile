@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 ARCH:=mips
 BOARD:=rtkmips
 BOARDNAME:=Realtek mips SOC
-SUBTARGETS:=rtl8198c rtl8954e
+SUBTARGETS:=rtl8196c rtl8198c rtl8954e
 FEATURES:=squashfs usb
 LINUX_VERSION:=3.10.49
 

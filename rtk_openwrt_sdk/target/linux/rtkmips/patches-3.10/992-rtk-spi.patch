@@ -15,7 +15,7 @@ diff -urN orig/drivers/mtd/mtd_blkdevs.c patch/drivers/mtd/mtd_blkdevs.c
  			if (tr->readsect(dev, block, buf))
  				return -EIO;
  		rq_flush_dcache_pages(req);
-+#ifdef CONFIG_RTL_8198C
++#ifdef CONFIG_SOC_RTL8198C
 +		__flush_cache_all();
 +#endif
  		return 0;
@@ -24,7 +24,7 @@ diff -urN orig/drivers/mtd/mtd_blkdevs.c patch/drivers/mtd/mtd_blkdevs.c
  			return -EIO;
  
  		rq_flush_dcache_pages(req);
-+#ifdef CONFIG_RTL_8198C
++#ifdef CONFIG_SOC_RTL8198C
 +		__flush_cache_all();
 +#endif
  		for (; nsect > 0; nsect--, block++, buf += tr->blksize)
@@ -34,7 +34,7 @@ diff -urN orig/drivers/mtd/mtd_blkdevs.c patch/drivers/mtd/mtd_blkdevs.c
  
  int mtd_blktrans_cease_background(struct mtd_blktrans_dev *dev)
  {
-+#ifdef CONFIG_RTL_8198C
++#ifdef CONFIG_SOC_RTL8198C
 +	if (kthread_should_stop())
 +		return 1;
 +#else
@@ -42,7 +42,7 @@ diff -urN orig/drivers/mtd/mtd_blkdevs.c patch/drivers/mtd/mtd_blkdevs.c
 +#endif
  }
  EXPORT_SYMBOL_GPL(mtd_blktrans_cease_background);
-+#ifdef CONFIG_RTL_8198C
++#ifdef CONFIG_SOC_RTL8198C
 +#define MAX_RT_PRIO 70
 +static int mtd_blktrans_thread(void *arg)
 +{
@@ -254,7 +254,7 @@ diff -urN orig/drivers/mtd/mtd_blkdevs.c patch/drivers/mtd/mtd_blkdevs.c
  			__blk_end_request_all(req, -ENODEV);
 -	else
 +		else 
-+#ifdef CONFIG_RTL_8198C
++#ifdef CONFIG_SOC_RTL8198C
 +       {
 +		dev->bg_stop = true;
 +		wake_up_process(dev->thread);
@@ -270,7 +270,7 @@ diff -urN orig/drivers/mtd/mtd_blkdevs.c patch/drivers/mtd/mtd_blkdevs.c
  	}
  
  	gd->queue = new->rq;
-+#ifdef CONFIG_RTL_8198C
++#ifdef CONFIG_SOC_RTL8198C
 +		/* Create processing thread */
 +		/* TODO: workqueue ? */
 +		new->thread = kthread_run(mtd_blktrans_thread, new,
@@ -294,16 +294,17 @@ diff -urN orig/drivers/mtd/mtd_blkdevs.c patch/drivers/mtd/mtd_blkdevs.c
  	gd->driverfs_dev = &new->mtd->dev;
  
  	if (new->readonly)
-@@ -467,9 +698,12 @@
+@@ -467,9 +698,14 @@
  	/* Stop new requests to arrive */
  	del_gendisk(old->disk);
- 
+
++#ifdef CONFIG_SOC_RTL8198C
 +	/* Stop the thread */
 +	kthread_stop(old->thread);
-+#ifndef CONFIG_RTL_8198C
++#endif
++#ifndef CONFIG_SOC_RTL8198C
  	/* Stop workqueue. This will perform any pending request. */
  	destroy_workqueue(old->wq);
--
 +#endif
  	/* Kill current requests */
  	spin_lock_irqsave(&old->queue_lock, flags);
@@ -315,7 +316,7 @@ diff -urN orig/include/linux/mtd/blktrans.h patch/include/linux/mtd/blktrans.h
  	struct kref ref;
  	struct gendisk *disk;
  	struct attribute_group *disk_attributes;
-+#ifndef CONFIG_RTL_8198C
++#ifndef CONFIG_SOC_RTL8198C
  	struct workqueue_struct *wq;
 +#endif
 +	struct task_struct *thread;

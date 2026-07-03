@@ -12,10 +12,15 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-//#define CONFIG_ICACHE_SIZE	(32 * 1024)
+// RTL8196C: 16KB I-cache, 16KB D-cache (Lexra LX4181)
+// RTL8198C: 64KB I-cache, 32KB D-cache (MIPS32r2 24Kc)
+#ifdef CONFIG_SOC_RTL8198C
 #define CONFIG_ICACHE_SIZE	(64 * 1024)
-//#define CONFIG_DCACHE_SIZE	(64 * 1024)
 #define CONFIG_DCACHE_SIZE	(32 * 1024)
+#else
+#define CONFIG_ICACHE_SIZE	(16 * 1024)
+#define CONFIG_DCACHE_SIZE	(16 * 1024)
+#endif
 
 #define CONFIG_CACHELINE_SIZE	32
 

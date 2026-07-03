@@ -19,11 +19,13 @@ obj-$(CONFIG_I2C) += i2c.o
 obj-$(CONFIG_SMP) += smp-amon.o
 obj-$(CONFIG_MIPS_MT_SMTC) += smtc.o
 
+obj-$(CONFIG_SOC_RTL8196C) += rtl8198c.o
 obj-$(CONFIG_SOC_RTL8198C) += rtl8198c.o
 obj-$(CONFIG_IRQ_GIC) += irq-gic.o
 obj-$(CONFIG_GPIOLIB) += gpio.o
 #obj-$(CONFIG_KEYBOARD_GPIO_POLLED) += dev-gpio-buttons.o
 obj-$(CONFIG_LEDS_GPIO) += dev_leds_gpio.o
+obj-$(CONFIG_SOC_RTL8196C) += mach_rtl8198c.o
 obj-$(CONFIG_SOC_RTL8198C) += mach_rtl8198c.o
 obj-$(CONFIG_MIPS_CMP) += gcmp.o
 #obj-$(CONFIG_MIPS_CMP) += amon.o

@@ -56,18 +56,18 @@ unsigned int  RTK_LINUX_PART_OFFSET=0x30000; //defaut
 
 unsigned int  RTK_FLASH_BANK_SIZE=RTK_USERDEFINE_FLASH_BANK_SIZE; //defaut
 
-#ifndef CONFIG_RTL_8198C //mark_hw , default hw setting
+#ifdef CONFIG_SOC_RTL8196C // RTL8196C: hw setting in MAC partition
 unsigned int HW_SETTING_OFFSET = 0x6000;
-#else
+#else // RTL8198C: hw setting in separate partition
 unsigned int HW_SETTING_OFFSET = 0x20000;
 #endif
 
 #ifdef CONFIG_RTK_BOOTINFO_SUPPORT
 #include "rtk_bootinfo.c"
 
-#ifndef CONFIG_RTL_8198C
+#ifdef CONFIG_SOC_RTL8196C // RTL8196C: bootinfo in config partition
 #define FLASH_BOOTINFO_OFFSET 0xC000
-#else //98C 
+#else // RTL8198C: bootinfo after hw settings
 #define FLASH_BOOTINFO_OFFSET 0x2a000
 #endif
 
