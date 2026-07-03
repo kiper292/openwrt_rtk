@@ -93,7 +93,7 @@ index 6716554..b0d29ad 100644
 +#endif
 +  }
 +#ifdef DEBUG
-+  DLOG("nets: %x <-> %x\n", ntohl(netlist->nets[l - 1].net.s_addr, ntohl(ip.s_addr));
++  DLOG("nets: %x <-> %x\n", ntohl(netlist->nets[l - 1].net.s_addr), ntohl(ip.s_addr));
 +  DLOG("mask: %x\n", netlist->nets[l - 1].mask);
 +#endif
 +  if (0 == l || (ntohl(ip.s_addr) > (ntohl(netlist->nets[l - 1].net.s_addr)

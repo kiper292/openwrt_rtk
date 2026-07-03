@@ -45,6 +45,7 @@ start_chinadns() {
 	append_parm $1 server "-s"
 	append_parm $1 chnroute "-c"
 	append_bool $1 bidirectional "-d"
+	xappend "-b 127.0.0.1"
 	service_start /usr/bin/chinadns \
 		$parms -m
 	return $?

@@ -8,6 +8,7 @@ diff -urN a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
 +#if defined(CONFIG_OPENWRT_SDK) && defined(CONFIG_RTL819X_WDT)
 +        {
 +        extern void bsp_reboot(void);
++        mdelay(5000);
 +        bsp_reboot();
 +        }
 +#endif
@@ -23,6 +24,7 @@ diff -urN a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
 +                die("Oops", regs);
 +                {
 +        	extern void bsp_reboot(void);
++        	mdelay(5000);
 +        	bsp_reboot();
 +        	}
 +        }
@@ -42,6 +44,7 @@ diff -urN a/kernel/exit.c b/kernel/exit.c
 +        	{
 +        	extern void bsp_reboot(void);
 +		printk("Fixing recursive fault but reboot is needed!\n");
++		mdelay(5000);
 +        	bsp_reboot();
 +        	}
 +#endif
@@ -60,6 +63,7 @@ diff -urN a/kernel/exit.c b/kernel/exit.c
 +	#if defined(CONFIG_OPENWRT_SDK) && defined(CONFIG_RTL819X_WDT)
 +        	{
 +        	extern void bsp_reboot(void);
++		mdelay(5000);
 +        	bsp_reboot();
 +        	}
 +	#endif
@@ -74,8 +78,7 @@ diff -urN a/kernel/rcutree.c b/kernel/rcutree.c
  
  	set_need_resched();  /* kick ourselves to get things going. */
  }
--#if !defined(CONFIG_RTL_8198C)
-+#if 1//!defined(CONFIG_RTL_8198C)
++#if !defined(CONFIG_RTL_8198C)
  static void check_cpu_stall(struct rcu_state *rsp, struct rcu_data *rdp)
  {
  	unsigned long j;
@@ -87,6 +90,7 @@ diff -urN a/kernel/rcutree.c b/kernel/rcutree.c
 +#if defined(CONFIG_OPENWRT_SDK) && defined(CONFIG_RTL819X_WDT)
 +        	{
 +        	extern void bsp_reboot(void);
++		mdelay(5000);
 +        	bsp_reboot();
 +        	}
 +#endif
