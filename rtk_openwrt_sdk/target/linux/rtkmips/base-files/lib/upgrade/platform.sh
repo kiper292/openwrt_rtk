@@ -26,10 +26,10 @@ platform_do_upgrade() {
 	[ -f /proc/flash/bootmode ] && [ -f /proc/flash/bootbank ] && {
 	bootmode=$bootmode_cmd
 	cur_bootbank=$bootbank_cmd
-	if [ $bootmode = '1' ];then
+	if [ "$bootmode" = '1' ];then
 		echo "It's dualimage toggle mode,always burn image to backup and next boot from it"
 		PART_NAME=linux_backup
-		if [ $cur_bootbank = '0' ];then
+		if [ "$cur_bootbank" = '0' ];then
 		next_bootbank=1
 		else
 		next_bootbank=0
@@ -49,13 +49,13 @@ install_ram_libs() {
 	echo "- install_ram_libs -"
 	ramlib="$RAM_ROOT/lib"
 	mkdir -p "$ramlib"
-	cp /lib/*.so.* $ramlib 
-	cp /lib/*.so $ramlib 
+	cp -a /lib/*.so.* "$ramlib" 2>/dev/null || true
+	cp -a /lib/*.so "$ramlib" 2>/dev/null || true
 }
 
 disable_watchdog() {
-        killall watchdog
-        ( ps | grep -v 'grep' | grep '/dev/watchdog' ) && {
+        killall watchdog 2>/dev/null
+        pgrep -f '/dev/watchdog' >/dev/null 2>&1 && {
                 echo 'Could not disable watchdog'
                 return 1
         }

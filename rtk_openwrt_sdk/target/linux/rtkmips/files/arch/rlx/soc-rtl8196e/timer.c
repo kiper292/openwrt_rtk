@@ -42,7 +42,7 @@ void __init bsp_timer_init(void)
 #ifdef CONFIG_RTL_WTDOG
 	//disable watchdog and clear counter and indicator
 	//OVSEL[3:2], OVSEL[1:0] = 1001: 2**24
-	REG32(BSP_WDTCNR) = (0xA5<<24) | (1 << 23) | (1 << 20) | (0x02 << 17) | (0x01 << 21);
+	REG32(BSP_WDTCNR) = (0xA5 << 24) | (1 << 23) | (1 << 20) | (0x02 << 17) | (0x01 << 21);
 #endif
 
 	/* hook up timer interrupt handler */

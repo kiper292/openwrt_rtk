@@ -87,7 +87,7 @@ static void rtk_set_timer(unsigned int t)
 	
 	
 	//clear related bit (OVSEL High and low)
-	reg_val = reg_val & ~(OVSEL_MASK << OVSEL_L_OFFSET ) &(OVSEL_MASK <<OVSEL_H_OFFSET ) ;
+	reg_val = reg_val & ~((OVSEL_MASK << OVSEL_L_OFFSET) | (OVSEL_MASK << OVSEL_H_OFFSET));
 
 	//set low 2 bit
 	reg_val  = reg_val | ((rtk_t_idx&OVSEL_MASK) << OVSEL_L_OFFSET);
@@ -235,7 +235,7 @@ static int rtl819x_wdt_probe(struct platform_device *pdev)
 	if (!ret)
 		dev_info(&pdev->dev, "Initialized\n");
 
-	return 0;
+	return ret;
 }
 
 static int rtl819x_wdt_remove(struct platform_device *pdev)

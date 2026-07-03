@@ -118,10 +118,6 @@ void __init bsp_setup(void)
 #ifdef CONFIG_OPENWRT_SDK
 void bsp_reboot(void)
 {
-#define BSP_TC_BASE         0xB8003100
-#define BSP_WDTCNR          (BSP_TC_BASE + 0x1C)
-
-
         REG32(BSP_GIMR)=0;
 
         local_irq_disable();
