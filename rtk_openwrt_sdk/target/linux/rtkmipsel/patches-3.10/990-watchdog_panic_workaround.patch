@@ -8,10 +8,9 @@ diff -urN a/kernel/panic.c b/kernel/panic.c
 +#ifdef CONFIG_OPENWRT_SDK
 +        {
 +        extern void bsp_reboot(void);
-+        mdelay(5000);
 +        bsp_reboot();
 +        }
 +#endif
-+	local_irq_enable();
+ 	local_irq_enable();
  	for (i = 0; ; i += PANIC_TIMER_STEP) {
  		touch_softlockup_watchdog();
