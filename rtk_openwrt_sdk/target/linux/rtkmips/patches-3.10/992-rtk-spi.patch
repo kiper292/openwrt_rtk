@@ -297,7 +297,7 @@ diff -urN orig/drivers/mtd/mtd_blkdevs.c patch/drivers/mtd/mtd_blkdevs.c
 @@ -467,9 +698,14 @@
  	/* Stop new requests to arrive */
  	del_gendisk(old->disk);
-
+ 
 +#ifdef CONFIG_SOC_RTL8198C
 +	/* Stop the thread */
 +	kthread_stop(old->thread);
@@ -305,6 +305,7 @@ diff -urN orig/drivers/mtd/mtd_blkdevs.c patch/drivers/mtd/mtd_blkdevs.c
 +#ifndef CONFIG_SOC_RTL8198C
  	/* Stop workqueue. This will perform any pending request. */
  	destroy_workqueue(old->wq);
+-
 +#endif
  	/* Kill current requests */
  	spin_lock_irqsave(&old->queue_lock, flags);
