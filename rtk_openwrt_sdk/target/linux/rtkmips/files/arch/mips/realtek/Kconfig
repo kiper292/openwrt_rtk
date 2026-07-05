@@ -11,9 +11,11 @@ choice
 		select MIPS_CPU_SCACHE
 		select HW_HAS_PCI
 		select SYS_SUPPORTS_HIGHMEM
+		select IRQ_GIC
+		select RTL_92C_SUPPORT
 		help
 		  RTL8196C uses Lexra LX4181 core (MIPS32r2 compatible).
-		  Single-core, no SMP, no GIC, USB 2.0 (EHCI/OHCI).
+		  Single-core, no SMP, GIC for interrupt dispatch, USB 2.0 (EHCI/OHCI).
 
 	config SOC_RTL8198C
 		bool "rtl8198c (MIPS32r2 24Kc, dual-core)"
