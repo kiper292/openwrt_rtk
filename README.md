@@ -1,4 +1,4 @@
-# OpenWrt 14.07 for D-Link DAP-1360 (RTL8196C)
+# OpenWrt 14.07 for D-Link DAP-1360 (H/W: D1, RTL8196C)
 
 Custom OpenWrt build for D-Link DAP-1360 router based on Realtek RTL8196C SoC. Forked from cgoder/openwrt_rtk SDK with added RTL8196C subtarget support.
 
@@ -8,7 +8,7 @@ Custom OpenWrt build for D-Link DAP-1360 router based on Realtek RTL8196C SoC. F
 |-----------|---------------|
 | SoC | Realtek RTL8196C (Lexra LX4181, single-core, 389 BogoMIPS) |
 | CPU | MIPS32r2 compatible, no FPU |
-| RAM | 24 MB (soldered) |
+| RAM | 32 MB (soldered) |
 | Flash | 4 MB SPI NOR (Winbond) |
 | WiFi | RTL8192CD (2.4 GHz 802.11n, 2x2 MIMO) |
 | Ethernet | RTL8196C integrated 10/100 switch (2 ports) |
@@ -116,8 +116,8 @@ bin/rtkmips/
 
 ### Method 1: Web Interface (if accessible)
 
-1. Connect to DAP-1360 via Ethernet (192.168.12.1)
-2. Open web interface (http://192.168.12.1)
+1. Connect to DAP-1360 via Ethernet (192.168.0.50)
+2. Open web interface (http://192.168.0.50)
 3. Navigate to Firmware Update
 4. Upload the `-fw.bin` file
 5. Wait for reboot
@@ -151,7 +151,7 @@ Pin 4: RX (connect to USB-RX)
 
 | Service | IP | Username | Password |
 |---------|-----|----------|----------|
-| Web/SSH | 192.168.12.1 | root | (empty) |
+| Web/SSH | 192.168.0.50 | admin | admin |
 | WiFi SSID | — | DAP-1360-OpenWrt | — |
 
 ## Configuration Details
@@ -218,30 +218,35 @@ Minimal build for 4MB flash:
 ## Project Structure
 
 ```
-rtk_openwrt_sdk/
-├── rtk_deconfig/
-│   └── defconfig_rtl8196c          # DAP-1360 defconfig
-├── target/linux/rtkmips/
-│   ├── Makefile                     # SUBTARGETS includes rtl8196c
-│   ├── rtl8196c/                    # RTL8196C subtarget
-│   │   ├── target.mk               # CPU_TYPE:=rlx4181
-│   │   ├── config-3.10             # Kernel config
-│   │   ├── kconfig/
-│   │   │   └── 96C-config-3.10     # Menuconfig variant
-│   │   └── profiles/
-│   │       ├── 120-AP.mk           # Generic AP profile
-│   │       └── 130-DAP1360.mk      # DAP-1360 profile
-│   ├── rtl8198c/                    # RTL8198C subtarget (reference)
-│   ├── image/
-│   │   ├── Makefile                 # Image build rules
-│   │   └── lzma-loader/            # Boot decompressor
-│   ├── files/
-│   │   ├── drivers/net/wireless/rtl8192cd/  # WiFi driver
-│   │   ├── drivers/net/rtl819x/    # Ethernet/switch driver
-│   │   ├── drivers/mtd/maps/       # Flash mapping
-│   │   └── arch/mips/realtek/      # Board support
-│   └── patches-3.10/               # Kernel patches (36 total)
-└── tools/rtk-tools/                 # cvimg-rtl8196c image tool
+openwrt-14.07-dap1360/
+├── README.md                        # This file
+├── BUILD.md                         # Quick build reference
+├── Dockerfile                       # Docker build environment
+├── docker-setup.sh                  # Docker container setup script
+└── rtk_openwrt_sdk/
+    ├── rtk_deconfig/
+    │   └── defconfig_rtl8196c          # DAP-1360 defconfig
+    ├── target/linux/rtkmips/
+    │   ├── Makefile                     # SUBTARGETS includes rtl8196c
+    │   ├── rtl8196c/                    # RTL8196C subtarget
+    │   │   ├── target.mk               # CPU_TYPE:=mips32
+    │   │   ├── config-3.10             # Kernel config
+    │   │   ├── kconfig/
+    │   │   │   └── 96C-config-3.10     # Menuconfig variant
+    │   │   └── profiles/
+    │   │       ├── 120-AP.mk           # Generic AP profile
+    │   │       └── 130-DAP1360.mk      # DAP-1360 profile
+    │   ├── rtl8198c/                    # RTL8198C subtarget (reference)
+    │   ├── image/
+    │   │   ├── Makefile                 # Image build rules
+    │   │   └── lzma-loader/            # Boot decompressor
+    │   ├── files/
+    │   │   ├── drivers/net/wireless/rtl8192cd/  # WiFi driver
+    │   │   ├── drivers/net/rtl819x/    # Ethernet/switch driver
+    │   │   ├── drivers/mtd/maps/       # Flash mapping
+    │   │   └── arch/mips/realtek/      # Board support
+    │   └── patches-3.10/               # Kernel patches (35 total)
+    └── tools/rtk-tools/                 # cvimg-rtl8196c image tool
 ```
 
 ## Differences from RTL8198C
@@ -253,9 +258,9 @@ rtk_openwrt_sdk/
 | USB | EHCI/OHCI (2.0) | XHCI (3.0) |
 | WiFi bands | 2.4 GHz only | 2.4 + 5 GHz |
 | Kernel offset | 0x30000 | 0x60000 |
-| HW settings | 0x6000 | 0x20000 |
+| HW settings | 0x20000 | 0x20000 |
 | I-cache | 16 KB | 64 KB |
-| D-cache | 16 KB | 32 KB |
+| D-cache | 8 KB | 32 KB |
 
 ## Known Issues
 
@@ -276,12 +281,12 @@ If device is bricked:
 
 Download from D-Link support: `2017.10.13-15.40_DAP_1360D1_3.0.0_release.bin` (3.12 MB)
 
+**Note:** This firmware is for hardware revision D1 only.
+
 ## References
 
 - [OpenWrt 14.07 Documentation](https://openwrt.org/docs/start)
 - [cgoder/openwrt_rtk](https://github.com/cgoder/openwrt_rtk)
-- [DAP-1360 Hardware Investigation](../../conclusions.txt)
-- [WiFi Driver Source](../../wifi_driver_found.txt)
 
 ## License
 

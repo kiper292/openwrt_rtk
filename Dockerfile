@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 # Prevent interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -25,10 +25,7 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Fix TLS issues with Ubuntu 14.04's outdated gnutls
-RUN git config --global http.sslVerify false && \
-    git config --global https.sslVerify false && \
-    git config --global http.postBuffer 524288000 && \
+RUN git config --global http.postBuffer 524288000 && \
     git config --global core.compression 0
 
 # Create build user
