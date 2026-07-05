@@ -20,6 +20,10 @@ ifdef CONFIG_TARGET_realtek_rtl8196e
 TARGET_DIR:=4181
 endif
 
+ifdef CONFIG_TARGET_rtkmips_rtl8196c
+TARGET_DIR:=4181
+endif
+
 ifdef CONFIG_TARGET_realtek_rtl8881a
 TARGET_DIR:=5281
 endif
