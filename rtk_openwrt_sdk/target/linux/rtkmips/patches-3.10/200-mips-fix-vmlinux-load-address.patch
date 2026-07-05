@@ -1,0 +1,11 @@
+diff -urN a/arch/mips/Makefile b/arch/mips/Makefile
+--- a/arch/mips/Makefile	2014-01-01 00:00:00.000000000 +0800
++++ b/arch/mips/Makefile	2014-01-01 00:00:00.000000000 +0800
+@@ -247,7 +247,7 @@
+ KBUILD_AFLAGS	+= $(cflags-y)
+ KBUILD_CFLAGS	+= $(cflags-y)
+-KBUILD_CPPFLAGS += -DVMLINUX_LOAD_ADDRESS=$(load-y)
++KBUILD_CPPFLAGS += -DVMLINUX_LOAD_ADDRESS=$(if $(load-y),$(load-y),0x80000000)
+ KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
+
+ LDFLAGS			+= -m $(ld-emul)
