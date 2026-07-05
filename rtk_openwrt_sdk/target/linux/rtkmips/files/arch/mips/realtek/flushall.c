@@ -1,8 +1,13 @@
+#ifdef CONFIG_SOC_RTL8198C
+#define cpu_dcache_size                         (32 * 1024)
+#define cpu_icache_size                         (64 * 1024)
+#else
+#define cpu_dcache_size                         (8 * 1024)
+#define cpu_icache_size                         (16 * 1024)
+#endif
 #define cpu_dcache_line                         32
 #define cpu_icache_line                         32
 #define cpu_l2cache_line                        32
-#define cpu_dcache_size                         (32 * 1024)
-#define cpu_icache_size                         (64 * 1024)
 #define cpu_l2cache_size                        (512 * 1024)
 
 /* cache operations */
