@@ -70,6 +70,11 @@ define Build/Prepare
 	$(INSTALL_DIR) $(PKG_BUILD_DIR)
 	$(INSTALL_DIR) release
 	cp src/* $(PKG_BUILD_DIR)/ -rf
+	$(INSTALL_BIN) release/fastpath_core-$(TARGET_DIR).S $(PKG_BUILD_DIR)/fastpath_core.S
+	$(INSTALL_BIN) release/filter-$(TARGET_DIR).S $(PKG_BUILD_DIR)/filter.S
+	$(INSTALL_BIN) release/fast_pptp_core-$(TARGET_DIR).S $(PKG_BUILD_DIR)/fast_pptp_core.S
+	$(INSTALL_BIN) release/fast_l2tp_core-$(TARGET_DIR).S $(PKG_BUILD_DIR)/fast_l2tp_core.S
+	$(INSTALL_BIN) release/fast_pppoe_core-$(TARGET_DIR).S $(PKG_BUILD_DIR)/fast_pppoe_core.S
 endef
 
 define Build/Compile

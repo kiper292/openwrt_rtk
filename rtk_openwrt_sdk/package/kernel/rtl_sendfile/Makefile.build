@@ -62,6 +62,7 @@ define Build/Prepare
 	$(INSTALL_DIR) $(PKG_BUILD_DIR)
 	$(INSTALL_DIR) release
 	cp src/Makefile src/reverse_sendfile.c src/reverse_sendfile_common.c $(PKG_BUILD_DIR)/
+	$(INSTALL_BIN) release/reverse_sendfile-$(TARGET_DIR).S $(PKG_BUILD_DIR)/reverse_sendfile.S
 endef
 
 define Build/Compile
