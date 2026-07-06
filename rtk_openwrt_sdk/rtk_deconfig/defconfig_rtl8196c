@@ -13,7 +13,7 @@ CONFIG_HAS_SUBTARGETS=y
 CONFIG_TARGET_BOARD="rtkmips"
 CONFIG_TARGET_ARCH_PACKAGES="rtkmips"
 CONFIG_DEFAULT_TARGET_OPTIMIZATION="-Os -pipe"
-CONFIG_CPU_TYPE="rlx4181"
+CONFIG_CPU_TYPE="mips32"
 CONFIG_LINUX_3_10=y
 CONFIG_DEFAULT_base-files=y
 CONFIG_DEFAULT_busybox=y
@@ -232,6 +232,8 @@ CONFIG_PACKAGE_procd=y
 # CONFIG_PACKAGE_rpcd is not set
 # CONFIG_PACKAGE_sflowovsd is not set
 CONFIG_PACKAGE_swconfig=y
+CONFIG_RTL_GSO=y
+CONFIG_SOC_RTL8196C=y
 CONFIG_PACKAGE_ubox=y
 CONFIG_PACKAGE_ubus=y
 CONFIG_PACKAGE_ubusd=y
@@ -707,7 +709,7 @@ CONFIG_PACKAGE_luci-theme-bootstrap=y
 #
 # CONFIG_PACKAGE_luci-i18n-catalan is not set
 # CONFIG_PACKAGE_luci-i18n-chinese is not set
-CONFIG_PACKAGE_luci-i18n-english=y
+# CONFIG_PACKAGE_luci-i18n-english is not set
 # CONFIG_PACKAGE_luci-i18n-french is not set
 # CONFIG_PACKAGE_luci-i18n-german is not set
 # CONFIG_PACKAGE_luci-i18n-greek is not set
