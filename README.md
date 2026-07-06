@@ -6,12 +6,12 @@ Custom OpenWrt build for D-Link DAP-1360 router based on Realtek RTL8196C SoC. F
 
 | Component | Specification |
 |-----------|---------------|
-| SoC | Realtek RTL8196C (Lexra LX4181, single-core, 389 BogoMIPS) |
-| CPU | MIPS32r2 compatible, no FPU |
+| SoC | Realtek RTL8196C (RLX4181, single-core, 389 BogoMIPS) |
+| CPU | MIPS-1 ISA, MIPS16 ISA, no FPU |
 | RAM | 32 MB (soldered) |
 | Flash | 4 MB SPI NOR (Winbond) |
 | WiFi | RTL8192CD (2.4 GHz 802.11n, 2x2 MIMO) |
-| Ethernet | RTL8196C integrated 10/100 switch (2 ports) |
+| Ethernet | RTL8196C integrated 5-port 10/100 switch (2 ports on board) |
 | Bootloader | RTL-Boot (NOT U-Boot) |
 | Serial | 38400 baud (NOT 115200) |
 
@@ -36,7 +36,7 @@ OpenWrt requires a case-sensitive filesystem. Use Linux or WSL2.
 # Ubuntu/Debian dependencies
 sudo apt-get update
 sudo apt-get install build-essential libncurses5-dev zlib1g-dev gawk \
-    git gettext libssl-dev xsltproc wget unzip python2 python3 \
+    git gettext libssl-dev xsltproc wget unzip python \
     subversion mercurial rsync
 
 # Verify case sensitivity
@@ -55,7 +55,7 @@ rm Test
 
 ```bash
 cd /path/to/work
-git clone https://github.com/cgoder/openwrt_rtk.git
+git clone https://github.com/kiper292/openwrt_rtk.git
 cd openwrt_rtk/rtk_openwrt_sdk
 ```
 
@@ -67,7 +67,7 @@ cd openwrt_rtk/rtk_openwrt_sdk
 ./rtk_scripts/rtk_init.sh patch
 ```
 
-**Note:** The `prepare` command downloads the Realtek toolchain from `cadinfo.realtek.com.tw`. If this server is down, you'll need an alternative source.
+**Note:** The `prepare` command downloads the Realtek toolchain from the GitHub releases of this repository.
 
 ### 3. Update Feeds
 
@@ -107,9 +107,7 @@ make V=s -j1
 
 ```
 bin/rtkmips/
-├── openwrt-rtkmips-rtl8196c-DAP1360-fw.bin    # Final firmware image
-├── openwrt-rtkmips-rtl8196c-rootfs.squashfs   # Root filesystem
-└── openwrt-rtkmips-rtl8196c-vmlinux.bin.lzma  # Compressed kernel
+└── openwrt-rtkmips-rtl8196c-DAP1360-fw.bin    # Firmware image (kernel + rootfs)
 ```
 
 ## Flashing
@@ -132,7 +130,7 @@ sudo systemctl restart tftpd-hpa
 
 # On router (via telnet/serial)
 tftp -g -l /tmp/firmware.bin <TFTP_SERVER_IP>
-mtd write /tmp/firmware.bin Linux
+mtd write /tmp/firmware.bin linux
 reboot
 ```
 
@@ -164,7 +162,7 @@ Key settings for RTL8196C:
 # SoC selection
 CONFIG_SOC_RTL8196C=y
 
-# CPU (single-core Lexra)
+# CPU (single-core RLX4181)
 # CONFIG_SMP is not set
 CONFIG_NR_CPUS=1
 # CONFIG_CPU_MIPS32_R2 is not set
@@ -192,10 +190,10 @@ Minimal build for 4MB flash:
 
 **Included:**
 - base-files, busybox, dropbear, firewall, iptables
-- netifd, opkg, uci, procd, ubus
-- kmod-ipt-core, kmod-ipt-conntrack, kmod-ipt-nat
-- kmod-cfg80211, kmod-mac80211, wpad-mini
-- luci, luci-base, luci-theme-bootstrap
+- netifd, opkg, uci, procd, ubus, dnsmasq
+- kmod-ipt-core, kmod-ipt-conntrack, kmod-ipt-nat, kmod-ipt-nathelper
+- kmod-cfg80211, kmod-mac80211, kmod-rtl8192cd, wpad
+- luci, luci-base, luci-theme-bootstrap, uhttpd
 - luci-app-firewall, luci-proto-ppp
 - ppp, ppp-mod-pppoe
 
@@ -245,7 +243,7 @@ openwrt-14.07-dap1360/
     │   │   ├── drivers/net/rtl819x/    # Ethernet/switch driver
     │   │   ├── drivers/mtd/maps/       # Flash mapping
     │   │   └── arch/mips/realtek/      # Board support
-    │   └── patches-3.10/               # Kernel patches (35 total)
+    │       └── patches-3.10/               # Kernel patches (36 total)
     └── tools/rtk-tools/                 # cvimg-rtl8196c image tool
 ```
 
@@ -253,7 +251,7 @@ openwrt-14.07-dap1360/
 
 | Feature | RTL8196C (DAP-1360) | RTL8198C (reference) |
 |---------|---------------------|----------------------|
-| CPU cores | 1 (Lexra LX4181) | 2 (MIPS32r2 24Kc) |
+| CPU cores | 1 (RLX4181) | 2 (MIPS32r2 24Kc) |
 | SMP | Disabled | Enabled |
 | USB | EHCI/OHCI (2.0) | XHCI (3.0) |
 | WiFi bands | 2.4 GHz only | 2.4 + 5 GHz |
@@ -279,7 +277,7 @@ If device is bricked:
 
 ### Stock Firmware
 
-Download from D-Link support: `2017.10.13-15.40_DAP_1360D1_3.0.0_release.bin` (3.12 MB)
+Download from [GitHub Releases](https://github.com/kiper292/openwrt_rtk/releases): `2017.10.13-15.40_DAP_1360D1_3.0.0_release.bin` (3.12 MB)
 
 **Note:** This firmware is for hardware revision D1 only.
 

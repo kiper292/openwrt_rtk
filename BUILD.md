@@ -12,7 +12,7 @@
 ```bash
 sudo apt-get update
 sudo apt-get install build-essential libncurses5-dev zlib1g-dev gawk \
-    git gettext libssl-dev xsltproc wget unzip python python3 subversion \
+    git gettext libssl-dev xsltproc wget unzip python subversion \
     mercurial rsync curl sudo ca-certificates
 ```
 
@@ -41,9 +41,7 @@ make V=s -j$(nproc)
 
 ```
 bin/rtkmips/
-├── openwrt-rtkmips-rtl8196c-DAP1360-fw.bin    # Firmware image
-├── openwrt-rtkmips-rtl8196c-rootfs.squashfs   # Root filesystem
-└── openwrt-rtkmips-rtl8196c-vmlinux.bin.lzma  # Compressed kernel
+└── openwrt-rtkmips-rtl8196c-DAP1360-fw.bin    # Firmware image (kernel + rootfs)
 ```
 
 ## What Gets Built
@@ -83,7 +81,7 @@ make V=s -j$(nproc)
 
 | Issue | Solution |
 |-------|----------|
-| `rtk_init.sh prepare` fails | Check internet connection, Realtek SVN may be down |
+| `rtk_init.sh prepare` fails | Check internet connection, GitHub releases may be unavailable |
 | Build stops with config error | Run `make kernel_menuconfig`, save and exit |
 | WiFi module not loading | Check `lsmod | grep 8192cd`, verify `CONFIG_PACKAGE_kmod-rtl8192cd=y` |
 | Image too large | Remove packages from defconfig, rebuild |
