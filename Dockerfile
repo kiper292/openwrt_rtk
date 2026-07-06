@@ -16,7 +16,6 @@ RUN apt-get update && apt-get install -y \
     wget \
     unzip \
     python \
-    python3 \
     subversion \
     mercurial \
     rsync \
