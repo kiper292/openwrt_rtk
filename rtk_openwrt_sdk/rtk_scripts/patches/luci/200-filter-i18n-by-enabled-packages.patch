@@ -1,6 +1,6 @@
 diff -urN luci_orig/build/module.mk luci_patch/build/module.mk
---- build/module.mk
-+++ build/module.mk
+--- luci_orig/build/module.mk
++++ luci_patch/build/module.mk
 @@ -20,7 +20,14 @@
  	for i in $$(find dist -name .svn -o -name .gitignore); do rm -rf $$i || true; done
    ifneq ($(PO),)
